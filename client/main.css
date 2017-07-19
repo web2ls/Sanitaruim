@@ -1,0 +1,11 @@
+/* CSS declarations go here */
+.patient-full-info {
+  display: none;
+}
+
+.patient-list li:after,
+.trial-list li:after {
+  content: '';
+  display: block;
+  clear: both;
+}

@@ -1,0 +1,181 @@
+<head>
+  <title>Sanitarium Project</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="blue">
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo">Sanitarium Space</a>
+        </div>
+      </nav>
+    </header>
+
+    {{> mainLayout }}
+
+  </div>
+
+  {{> newPatientModal}}
+  {{> newTrialModal}}
+</body>
+
+<template name="mainLayout">
+  {{ > Template.dynamic template=content }}
+</template>
+
+<template name="patientList">
+  <div class="container">
+    <section class="patient-list">
+      <a href="#new-patient-modal" class="waves-effect waves-light btn">Add Patient</a>
+      <ul class="collection">
+        {{ #each patients }}
+          {{> patient}}
+        {{ /each }}
+      </ul>
+    </section>
+  </div>
+</template>
+
+<template name="patient">
+  <li class="collection-item">
+    <div class="patient-name">
+      <span>Patient: {{ firstName }} {{ lastName }}</span>
+      <a class="delete-patient-btn waves-effect waves-teal btn-flat secondary-content">Delete</a>
+      <a class="show-trials-btn waves-effect waves-teal btn-flat secondary-content">Show trials</a>
+      <a class="show-more-info-btn waves-effect waves-teal btn-flat secondary-content">Show more...</a>
+    </div>
+    <div class="patient-full-info">
+      <div class="patient-sex"><span>Sex: {{ sex }}</span></div>
+      <div class="patient-age"><span>Age: {{ age }}</span></div>
+    </div>
+  </li>
+</template>
+
+<template name="newPatientModal">
+  <div id="new-patient-modal" class="modal">
+    <div class="modal-content">
+      <h4>New Patient Info</h4>
+      <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input name="firstName" id="first_name" type="text" class="validate">
+            <label for="first_name">First Name</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="last_name" type="text" name="lastName" class="validate">
+            <label for="last_name">Last Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <select name="chooseSex" class="choose-sex">
+              <option value="" disabled selected>Choose your option</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field inline">
+            <input id="age" type="number" name="age" class="validate">
+            <label for="age">Age</label>
+          </div>
+        </div>
+        <input type="submit" value="Save">
+      </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="trialList">
+  <div class="container">
+    <section class="trial-list">
+      <a href="#" class="back-to-patients-btn waves-effect waves-light btn">Back to Patients</a>
+      <a href="#new-trial-modal" class="waves-effect waves-light btn">Add Trial</a>
+      <h5>Trial List</h5>
+      <ul class="collection">
+        {{ #each trials }}
+          {{> trialPreview}}
+        {{ /each }}
+      </ul>
+    </section>
+  </div>
+</template>
+
+<template name="trialPreview">
+  <li class="collection-item">
+    <div class="patient-name">
+      <span>Trial: {{ trialName }}</span>
+      <a class="delete-trial-btn waves-effect waves-teal btn-flat secondary-content">Delete</a>
+      <a class="edit-trial-btn waves-effect waves-teal btn-flat secondary-content">Open</a>
+    </div>
+  </li>
+</template>
+
+<template name="newTrialModal">
+  <div id="new-trial-modal" class="modal">
+    <div class="modal-content">
+      <h4>New Trial Info</h4>
+      <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input name="trialName" id="trial_name" type="text" class="validate">
+            <label for="first_name">Trial Name</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="trial_Patient" type="text" name="trialPatient" class="validate">
+            <label for="last_name">Patient Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea id="textarea1" name="trialConclusion" class="materialize-textarea"></textarea>
+            <label for="textarea1">Conclusion</label>
+          </div>
+        </div>
+        <div class="row">
+          <h5>Check Type of Trial</h5>
+          <p>
+            <input type="checkbox" class="filled-in" id="trial-type-a" value="Type A" name="trialTypeA" />
+            <label for="trial-type-a">Type A</label>
+          </p>
+          <p>
+            <input type="checkbox" class="filled-in" id="trial-type-b" value="Type B" name="trialTypeB" />
+            <label for="trial-type-b">Type B</label>
+          </p>
+        </div>
+        <input type="submit" value="Save">
+      </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="editTrial">
+ <div class="container">
+    <h4>Trial Info</h4>
+    <div class="row">
+    <form class="edit-trial-form col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <input name="trialName" id="trial_name" type="text" class="validate" value="{{currentTrial.trialName}}">
+        </div>
+        <div class="input-field col s6">
+          <input id="trial_Patient" type="text" name="trialPatient" class="validate" value="{{currentTrial.trialPatient}}">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea id="textarea1" name="trialConclusion" class="materialize-textarea" value="{{currentTrial.trialConclusion}}"></textarea>
+        </div>
+      </div>
+      <input class="back-to-trials-btn" type="button" value="Cancel">
+      <input type="submit" value="Save">
+    </form>
+    </div>
+  </div>
+</template>
